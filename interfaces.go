@@ -90,6 +90,10 @@ type TGBotAPI interface {
 	IsMessageToMe(message tgbotapi.Message) bool
 	GetUpdatesChan(config tgbotapi.UpdateConfig) (<-chan tgbotapi.Update, error)
 	MakeRequest(endpoint string, params url.Values) (tgbotapi.APIResponse, error)
+	SetWebhook(config tgbotapi.WebhookConfig) (tgbotapi.APIResponse, error)
+	GetWebhookInfo() (tgbotapi.WebhookInfo, error)
+	RemoveWebhook() (tgbotapi.APIResponse, error)
+	ListenForWebhook(pattern string) <-chan tgbotapi.Update
 }
 
 // AuthorizationPolicy - interface, that describes authorization policy for command or session

@@ -234,6 +234,18 @@ func (margelet *Margelet) GetRedis() *redis.Client {
 	return margelet.Redis
 }
 
+// SetWebhook - sets a webhook to
+// If this is set, Start will not get any data!
+func (margelet *Margelet) SetWebhook(config tgbotapi.WebhookConfig) error {
+	_, err := margelet.bot.SetWebhook(config)
+	return err
+}
+
+// ListenForWebhook registers a http handler for a webhook
+func (margelet *Margelet) ListenForWebhook(pattern string) <-chan tgbotapi.Update {
+	return margelet.bot.ListenForWebhook(pattern)
+}
+
 // Run - starts message processing loop
 func (margelet *Margelet) Run() error {
 	updates, err := margelet.bot.GetUpdatesChan(tgbotapi.UpdateConfig{Timeout: 60})
@@ -247,6 +259,16 @@ func (margelet *Margelet) Run() error {
 		go handleUpdate(margelet, msg)
 	}
 	return nil
+}
+
+// RunWithWebhook register the HTTP handler and processes events.
+// It's up to caller to run the http server.
+func (margelet *Margelet) RunWithWebhook(path string) {
+	updates := margelet.ListenForWebhook(path)
+	for margelet.running {
+		msg := <-updates
+		go handleUpdate(margelet, msg)
+	}
 }
 
 // Stop - stops message processing loop
