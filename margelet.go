@@ -65,26 +65,26 @@ type Margelet struct {
 }
 
 // NewMargelet creates new Margelet instance
-func NewMargelet(botName string, redisAddr string, redisPassword string, redisDB int64, token string, verbose bool) (*Margelet, error) {
+func NewMargelet(botName string, token string, redisURL string, verbose bool) (*Margelet, error) {
 	bot, err := tgbotapi.NewBotAPI(token)
 	if err != nil {
 		return nil, err
 	}
 
 	bot.Debug = verbose
-	m, err := NewMargeletFromBot(botName, redisAddr, redisPassword, redisDB, bot, verbose)
+	m, err := NewMargeletFromBot(botName, redisURL, bot, verbose)
 
 	m.token = token
 	return m, err
 }
 
 // NewMargeletFromBot creates new Margelet instance from existing TGBotAPI(tgbotapi.BotAPI)
-func NewMargeletFromBot(botName string, redisAddr string, redisPassword string, redisDB int64, bot TGBotAPI, verbose bool) (*Margelet, error) {
-	redis := redis.NewClient(&redis.Options{
-		Addr:     redisAddr,
-		Password: redisPassword,
-		DB:       redisDB,
-	})
+func NewMargeletFromBot(botName string, redisURL string, bot TGBotAPI, verbose bool) (*Margelet, error) {
+	options, err := redis.ParseURL(redisURL)
+	if err != nil {
+		return &Margelet{}, err
+	}
+	redis := redis.NewClient(options)
 
 	if _, err := redis.Ping().Result(); err != nil {
 		return &Margelet{}, err
