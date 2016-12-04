@@ -3,9 +3,10 @@ package margelet
 import (
 	"encoding/json"
 	"fmt"
-	"gopkg.in/redis.v3"
-	"gopkg.in/telegram-bot-api.v4"
 	"strings"
+
+	"gopkg.in/redis.v5"
+	"gopkg.in/telegram-bot-api.v4"
 )
 
 // SessionRepository - public interface for session repository

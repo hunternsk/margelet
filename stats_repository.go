@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"gopkg.in/redis.v3"
+	"gopkg.in/redis.v5"
 )
 
 // StatsRepository - public interface for session repository

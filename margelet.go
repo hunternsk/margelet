@@ -2,11 +2,12 @@ package margelet
 
 import (
 	"fmt"
-	"gopkg.in/redis.v3"
-	"gopkg.in/telegram-bot-api.v4"
 	"net/http"
 	"path/filepath"
 	"strconv"
+
+	redis "gopkg.in/redis.v5"
+	"gopkg.in/telegram-bot-api.v4"
 )
 
 type policies []AuthorizationPolicy

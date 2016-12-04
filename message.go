@@ -1,7 +1,7 @@
 package margelet
 
 import (
-	"gopkg.in/redis.v3"
+	"gopkg.in/redis.v5"
 	"gopkg.in/telegram-bot-api.v4"
 )
 

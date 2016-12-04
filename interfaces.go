@@ -1,9 +1,10 @@
 package margelet
 
 import (
-	"gopkg.in/redis.v3"
-	"gopkg.in/telegram-bot-api.v4"
 	"net/url"
+
+	"gopkg.in/redis.v5"
+	"gopkg.in/telegram-bot-api.v4"
 )
 
 // MessageHandler - interface for message handlers
@@ -96,7 +97,7 @@ type AuthorizationPolicy interface {
 	Allow(message *tgbotapi.Message) error
 }
 
-// Message - interface, that describes incapsulated info aboud user's message with some helper methods
+// Message - interface, that describes incapsulated info about user's message with some helper methods
 type Message interface {
 	Store
 	Message() *tgbotapi.Message
@@ -124,7 +125,7 @@ type Message interface {
 	StartSession(command string)
 }
 
-// Session - interface, that describes incapsulated info aboud user's session with bot
+// Session - interface, that describes incapsulated info about user's session with bot
 type Session interface {
 	Message
 	Responses() []tgbotapi.Message

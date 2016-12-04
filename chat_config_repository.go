@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"gopkg.in/redis.v3"
+	"gopkg.in/redis.v5"
 )
 
 // ChatConfigRepository - repository for chat configs

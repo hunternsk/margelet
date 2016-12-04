@@ -1,9 +1,10 @@
 package margelet
 
 import (
-	"gopkg.in/redis.v3"
 	"strconv"
 	"strings"
+
+	"gopkg.in/redis.v5"
 )
 
 // ChatRepository - repository for started chats
