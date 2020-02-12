@@ -2,7 +2,9 @@ package margelet
 
 import (
 	"fmt"
+	"golang.org/x/net/proxy"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strconv"
 
@@ -74,6 +76,31 @@ func NewMargelet(botName string, token string, redisURL string, verbose bool) (*
 	bot.Debug = verbose
 	m, err := NewMargeletFromBot(botName, redisURL, bot, verbose)
 
+	m.token = token
+	return m, err
+}
+
+func NewMargeletWithClient(botName string, token string, redisURL string, verbose bool, proxyAddr string, proxyAuthUser string, proxyAuthPass string) (*Margelet, error) {
+	proxyAuth := &proxy.Auth{User: proxyAuthUser, Password: proxyAuthPass}
+	dialer, err := proxy.SOCKS5("tcp", proxyAddr, proxyAuth, proxy.Direct)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Can't connect to the proxy:", err)
+		os.Exit(1)
+	}
+	httpTransport := &http.Transport{}
+	httpClient := &http.Client{Transport: httpTransport}
+	httpTransport.Dial = dialer.Dial
+
+	bot, err := tgbotapi.NewBotAPIWithClient(token, httpClient)
+	if err != nil {
+		return nil, err
+	}
+
+	bot.Debug = verbose
+	m, err := NewMargeletFromBot(botName, redisURL, bot, verbose)
+	if err != nil {
+		return nil, err
+	}
 	m.token = token
 	return m, err
 }
